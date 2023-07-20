@@ -9,6 +9,7 @@ using FSH.WebApi.Application.Common.Interfaces;
 using FSH.WebApi.Application.Common.Mailing;
 using FSH.WebApi.Application.Common.Models;
 using FSH.WebApi.Application.Common.Sms;
+using FSH.WebApi.Application.Common.PushNotifications;
 using FSH.WebApi.Application.Common.Specification;
 using FSH.WebApi.Application.Identity.Users;
 using FSH.WebApi.Domain.Identity;
@@ -39,6 +40,7 @@ internal partial class UserService : IUserService
     private readonly ICacheService _cache;
     private readonly ICacheKeyService _cacheKeys;
     private readonly ITenantInfo _currentTenant;
+    private readonly IPushNotificationsProvider? _pushNotifications;
     private readonly ISmsProvider? _smsProvider;
 
     public UserService(
@@ -56,6 +58,7 @@ internal partial class UserService : IUserService
         ICacheKeyService cacheKeys,
         ITenantInfo currentTenant,
         IOptions<SecuritySettings> securitySettings,
+        IPushNotificationsProviderFactory pushNotificationsFactory,
         ISmsProviderFactory smsProviderFactory)
     {
         _signInManager = signInManager;
@@ -72,6 +75,7 @@ internal partial class UserService : IUserService
         _cacheKeys = cacheKeys;
         _currentTenant = currentTenant;
         _securitySettings = securitySettings.Value;
+        _pushNotifications = pushNotificationsFactory.Create();
         _smsProvider = smsProviderFactory.Create();
     }
 

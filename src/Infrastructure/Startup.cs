@@ -15,6 +15,7 @@ using FSH.WebApi.Infrastructure.Notifications;
 using FSH.WebApi.Infrastructure.OpenApi;
 using FSH.WebApi.Infrastructure.Persistence;
 using FSH.WebApi.Infrastructure.Persistence.Initialization;
+using FSH.WebApi.Infrastructure.PushNotifications;
 using FSH.WebApi.Infrastructure.SecurityHeaders;
 using FSH.WebApi.Infrastructure.Sms;
 using FSH.WebApi.Infrastructure.Validations;
@@ -53,6 +54,7 @@ public static class Startup
             .AddPersistence()
             .AddRequestLogging(config)
             .AddRouting(options => options.LowercaseUrls = true)
+            .AddPushNotifications()
             .AddSms()
             .AddServices();
     }

@@ -1,4 +1,4 @@
-﻿using Finbuckle.MultiTenant.Stores;
+using Finbuckle.MultiTenant.Stores;
 using FSH.WebApi.Infrastructure.Persistence.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +17,7 @@ public class TenantDbContext : EFCoreStoreDbContext<FSHTenantInfo>
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<FSHTenantInfo>().ToTable("Tenants", SchemaNames.MultiTenancy);
+        modelBuilder.Entity<FSHTenantInfo>().OwnsOne(t => t.PushNotificationsSettings);
         modelBuilder.Entity<FSHTenantInfo>().OwnsOne(t => t.SmsSettings);
     }
 }

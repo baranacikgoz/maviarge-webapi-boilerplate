@@ -1,7 +1,8 @@
-﻿using Finbuckle.MultiTenant;
+using Finbuckle.MultiTenant;
 using FSH.WebApi.Application.Common.Exceptions;
 using FSH.WebApi.Application.Common.Persistence;
 using FSH.WebApi.Application.Common.Sms;
+using FSH.WebApi.Application.Common.PushNotifications;
 using FSH.WebApi.Application.Multitenancy;
 using FSH.WebApi.Infrastructure.Persistence;
 using FSH.WebApi.Infrastructure.Persistence.Initialization;
@@ -112,6 +113,14 @@ internal class TenantService : ITenantService
         await _tenantStore.TryGetAsync(id)
             ?? throw new NotFoundException(_t["{0} {1} Not Found.", typeof(FSHTenantInfo).Name, id]);
 
+    public async Task<string> UpdatePushNotificationsSettings(string id, PushNotificationsSettings pushNotificationsSettings)
+    {
+        var tenant = await GetTenantInfoAsync(id);
+        tenant.PushNotificationsSettings = pushNotificationsSettings;
+        await _tenantStore.TryUpdateAsync(tenant);
+        return _t["Tenant {0}'s Push Notification Settings Updated.", id];
+    }
+    
     public async Task<string> UpdateSmsSettings(string id, SmsSettings smsSettings)
     {
         var tenant = await GetTenantInfoAsync(id);

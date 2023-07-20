@@ -1,5 +1,6 @@
-﻿using Finbuckle.MultiTenant;
+using Finbuckle.MultiTenant;
 using FSH.WebApi.Application.Common.Sms;
+using FSH.WebApi.Application.Common.PushNotifications;
 using FSH.WebApi.Shared.Multitenancy;
 
 namespace FSH.WebApi.Infrastructure.Multitenancy;
@@ -10,7 +11,7 @@ public class FSHTenantInfo : ITenantInfo
     {
     }
 
-    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null, SmsSettings? smsSettings = null)
+    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null, PushNotificationsSettings? pushNotificationsSettings = null, SmsSettings? smsSettings = null)
     {
         Id = id;
         Identifier = id;
@@ -19,6 +20,7 @@ public class FSHTenantInfo : ITenantInfo
         AdminEmail = adminEmail;
         IsActive = true;
         Issuer = issuer;
+        PushNotificationsSettings = pushNotificationsSettings;
         SmsSettings = smsSettings;
 
         // Add Default 1 Month Validity for all new tenants. Something like a DEMO period for tenants.
@@ -47,6 +49,7 @@ public class FSHTenantInfo : ITenantInfo
     /// </summary>
     public string? Issuer { get; set; }
 
+    public PushNotificationsSettings? PushNotificationsSettings { get; set; }
     public SmsSettings? SmsSettings { get; set; }
 
     public void AddValidity(int months) =>
