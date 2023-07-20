@@ -1,3 +1,4 @@
+using FSH.WebApi.Application.Common.Sms;
 using FSH.WebApi.Application.Common.PushNotifications;
 
 namespace FSH.WebApi.Application.Multitenancy;
@@ -12,4 +13,5 @@ public class TenantDto
     public DateTime ValidUpto { get; set; }
     public string? Issuer { get; set; }
     public PushNotificationsSettings? PushNotificationsSettings { get; set; }
+    public SmsSettings? SmsSettings { get; set; }
 }

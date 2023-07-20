@@ -17,6 +17,10 @@ public sealed class TokensController : VersionNeutralApiController
         return _tokenService.GetTokenAsync(request, GetIpAddress()!, cancellationToken);
     }
 
+    // Maybe add a GetTokenWithPhoneNumberAsync api and use sms service?
+    // [HttpPost("with-phone-number")]
+    // ...
+
     [HttpPost("refresh")]
     [AllowAnonymous]
     [TenantIdHeader]
