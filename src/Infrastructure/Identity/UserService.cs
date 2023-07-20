@@ -8,6 +8,7 @@ using FSH.WebApi.Application.Common.FileStorage;
 using FSH.WebApi.Application.Common.Interfaces;
 using FSH.WebApi.Application.Common.Mailing;
 using FSH.WebApi.Application.Common.Models;
+using FSH.WebApi.Application.Common.Sms;
 using FSH.WebApi.Application.Common.Specification;
 using FSH.WebApi.Application.Identity.Users;
 using FSH.WebApi.Domain.Identity;
@@ -38,6 +39,7 @@ internal partial class UserService : IUserService
     private readonly ICacheService _cache;
     private readonly ICacheKeyService _cacheKeys;
     private readonly ITenantInfo _currentTenant;
+    private readonly ISmsProvider? _smsProvider;
 
     public UserService(
         SignInManager<ApplicationUser> signInManager,
@@ -53,7 +55,8 @@ internal partial class UserService : IUserService
         ICacheService cache,
         ICacheKeyService cacheKeys,
         ITenantInfo currentTenant,
-        IOptions<SecuritySettings> securitySettings)
+        IOptions<SecuritySettings> securitySettings,
+        ISmsProviderFactory smsProviderFactory)
     {
         _signInManager = signInManager;
         _userManager = userManager;
@@ -69,6 +72,7 @@ internal partial class UserService : IUserService
         _cacheKeys = cacheKeys;
         _currentTenant = currentTenant;
         _securitySettings = securitySettings.Value;
+        _smsProvider = smsProviderFactory.Create();
     }
 
     public async Task<PaginationResponse<UserDetailsDto>> SearchAsync(UserListFilter filter, CancellationToken cancellationToken)

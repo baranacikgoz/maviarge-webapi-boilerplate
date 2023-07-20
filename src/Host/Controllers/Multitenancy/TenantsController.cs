@@ -56,4 +56,15 @@ public class TenantsController : VersionNeutralApiController
             ? BadRequest()
             : Ok(await Mediator.Send(request));
     }
+
+    [HttpPut("{id}/sms")]
+    [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
+    [OpenApiOperation("Update a tenant's SMS settings.", "")]
+    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+    public async Task<ActionResult<string>> UpdateSmsSettingsAsync(string id, UpdateSmsSettingsRequest request)
+    {
+        return id != request.TenantId
+            ? BadRequest()
+            : Ok(await Mediator.Send(request));
+    }
 }

@@ -117,5 +117,22 @@ public class UsersController : VersionNeutralApiController
         return _userService.ResetPasswordAsync(request);
     }
 
+    [HttpPost("{id}/send-sms")]
+    [MustHavePermission(FSHAction.SendSms, FSHResource.Users)]
+    [OpenApiOperation("Send a custom sms to a user.", "")]
+    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
+    public async Task<ActionResult> SendSmsAsync(string id, SendSmsRequest request, CancellationToken cancellationToken)
+    {
+        return id != request.UserId
+            ? BadRequest()
+            : Ok(await _userService.SendSmsAsync(request, cancellationToken));
+    }
+
+    // Your sms login apis can be implemented here
+    // An example api-flow is:
+    // (UserExists Path) CheckUserExistenceWithPhoneNumber -> SendSmsOtp -> GetTokenWithPhoneNumber(confirm otp here)
+    // (UserDoesNotExists Path) CheckUserExistenceWithPhoneNumber -> SendSmsOtp -> ConfirmSmsOtp -> SelfRegister -> GetTokenWithPhoneNumber(confirm same otp here also??)
+    // This api-flow ensures user have its claimed phone number before proceeding any further.Therefore nobody can register with other's phone number.
+
     private string GetOriginFromRequest() => $"{Request.Scheme}://{Request.Host.Value}{Request.PathBase.Value}";
 }

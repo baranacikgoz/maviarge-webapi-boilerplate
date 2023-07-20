@@ -1,3 +1,5 @@
+using FSH.WebApi.Application.Common.Sms;
+
 namespace FSH.WebApi.Application.Multitenancy;
 
 public class TenantDto
@@ -9,4 +11,5 @@ public class TenantDto
     public bool IsActive { get; set; }
     public DateTime ValidUpto { get; set; }
     public string? Issuer { get; set; }
+    public SmsSettings? SmsSettings { get; set; }
 }
