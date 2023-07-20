@@ -18,6 +18,8 @@ public class CreateTenantRequestValidator : CustomValidator<CreateTenantRequest>
                 .WithMessage((_, name) => T["Tenant {0} already exists.", name]);
 
         RuleFor(t => t.ConnectionString).Cascade(CascadeMode.Stop)
+            .NotEmpty()
+            .WithMessage(T["Connection string required."])
             .Must((_, cs) => string.IsNullOrWhiteSpace(cs) || connectionStringValidator.TryValidate(cs))
                 .WithMessage(T["Connection string invalid."]);
 
