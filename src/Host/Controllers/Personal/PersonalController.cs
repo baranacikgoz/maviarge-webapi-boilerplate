@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using FSH.WebApi.Application.Auditing;
 using FSH.WebApi.Application.Identity.Users;
 using FSH.WebApi.Application.Identity.Users.Password;
 
@@ -56,10 +55,10 @@ public class PersonalController : VersionNeutralApiController
             : Ok(await _userService.GetPermissionsAsync(userId, cancellationToken));
     }
 
-    [HttpGet("logs")]
-    [OpenApiOperation("Get audit logs of currently logged in user.", "")]
-    public Task<List<AuditDto>> GetLogsAsync()
-    {
-        return Mediator.Send(new GetMyAuditLogsRequest());
-    }
+    //[HttpGet("logs")]
+    //[OpenApiOperation("Get audit logs of currently logged in user.", "")]
+    //public Task<List<AuditDto>> GetLogsAsync()
+    //{
+    //    return Mediator.Send(new GetMyAuditLogsRequest());
+    //}
 }

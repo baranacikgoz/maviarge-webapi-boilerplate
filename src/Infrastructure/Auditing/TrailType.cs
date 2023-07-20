@@ -1,9 +1,9 @@
-namespace FSH.WebApi.Infrastructure.Auditing;
+//namespace FSH.WebApi.Infrastructure.Auditing;
 
-public enum TrailType : byte
-{
-    None = 0,
-    Create = 1,
-    Update = 2,
-    Delete = 3
-}
+//public enum TrailType : byte
+//{
+//    None = 0,
+//    Create = 1,
+//    Update = 2,
+//    Delete = 3
+//}
