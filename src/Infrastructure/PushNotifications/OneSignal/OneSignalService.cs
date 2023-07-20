@@ -9,6 +9,7 @@ namespace FSH.WebApi.Infrastructure.PushNotifications.OneSignal;
 // Maybe use template method pattern with a BaseClass? It could be usefull if we add another push notification provider.
 public class OneSignalService : IPushNotificationsProvider
 {
+    private readonly FSHTenantInfo _currentTenant;
     private readonly PushNotificationsSettings _tenantPushNotificationSettings;
     private readonly IPushNotificationsTemplateFactory _templateFactory;
     private readonly HttpClient _httpClient;
@@ -22,8 +23,10 @@ public class OneSignalService : IPushNotificationsProvider
         ILogger<OneSignalService> logger,
         ISerializerService serializer)
     {
-        ArgumentNullException.ThrowIfNull(currentTenant?.PushNotificationsSettings, nameof(currentTenant.PushNotificationsSettings));
-        _tenantPushNotificationSettings = currentTenant.PushNotificationsSettings;
+        _currentTenant = currentTenant;
+
+        ArgumentNullException.ThrowIfNull(_currentTenant?.PushNotificationsSettings, nameof(_currentTenant.PushNotificationsSettings));
+        _tenantPushNotificationSettings = _currentTenant.PushNotificationsSettings;
 
         _templateFactory = templateFactory;
         _httpClient = httpClientFactory.CreateClient(PushNotificationsConstants.HttpClientName);
@@ -97,23 +100,23 @@ public class OneSignalService : IPushNotificationsProvider
     {
         try
         {
-            _logger.LogDebug($"Sending push notification request to OneSignal with JSON: {json}");
+            _logger.LogDebug("Tenant: ({tenantId}). Sending push notification request via Provider ({provider}) with JSON: {json}", _currentTenant.Id, nameof(OneSignalService), json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync("", content);
             response.EnsureSuccessStatusCode();
             string responseContent = await response.Content.ReadAsStringAsync();
 
-            _logger.LogDebug($"OneSignal's response: {responseContent}");
+            _logger.LogDebug("Tenant: ({tenantId}). PushNotifications Provider's ({provider}) response: {responseContent}", _currentTenant.Id, nameof(OneSignalService), responseContent);
 
             if (responseContent.Contains("errors"))
             {
-                throw new OneSignalException("OneSignal returned an error.", new List<string> { responseContent });
+                throw new OneSignalException($"Tenant ({_currentTenant.Id}): {nameof(OneSignalService)} returned an error.", new List<string> { responseContent });
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error while sending push notification request to OneSignal with JSON: {json}");
+            _logger.LogError(ex, "Tenant: ({tenantId}). Error while sending push notifications request to PushNotifications Provider ({provider}) with JSON: {json}", _currentTenant.Id, nameof(OneSignalService), json);
 
             throw;
         }
