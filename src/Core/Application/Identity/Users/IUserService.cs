@@ -48,4 +48,6 @@ public interface IUserService : ITransientService
     Task ChangePasswordAsync(ChangePasswordRequest request, string userId);
 
     Task<string> SendPushNotificationsAsync(SendPushNotificationsRequest request, CancellationToken cancellationToken);
+    
+    Task<string> SendSmsAsync(SendSmsRequest request, CancellationToken cancellationToken);
 }

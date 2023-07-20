@@ -14,6 +14,7 @@ public static class FSHAction
     public const string Clean = nameof(Clean);
     public const string UpgradeSubscription = nameof(UpgradeSubscription);
     public const string SendPushNotifications = nameof(SendPushNotifications);
+    public const string SendSms = nameof(SendSms);
 }
 
 public static class FSHResource
@@ -42,6 +43,7 @@ public static class FSHPermissions
         new("Delete Users", FSHAction.Delete, FSHResource.Users),
         new("Export Users", FSHAction.Export, FSHResource.Users),
         new("Send Push Notifications to User", FSHAction.SendPushNotifications, FSHResource.Users),
+        new("Send Sms to Users", FSHAction.SendSms, FSHResource.Users),
         new("View UserRoles", FSHAction.View, FSHResource.UserRoles),
         new("Update UserRoles", FSHAction.Update, FSHResource.UserRoles),
         new("View Roles", FSHAction.View, FSHResource.Roles),

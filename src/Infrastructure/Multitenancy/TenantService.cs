@@ -1,6 +1,7 @@
-﻿using Finbuckle.MultiTenant;
+using Finbuckle.MultiTenant;
 using FSH.WebApi.Application.Common.Exceptions;
 using FSH.WebApi.Application.Common.Persistence;
+using FSH.WebApi.Application.Common.Sms;
 using FSH.WebApi.Application.Common.PushNotifications;
 using FSH.WebApi.Application.Multitenancy;
 using FSH.WebApi.Infrastructure.Persistence;
@@ -54,7 +55,8 @@ internal class TenantService : ITenantService
     {
         if (request.ConnectionString?.Trim() == _dbSettings.ConnectionString.Trim()) request.ConnectionString = string.Empty;
 
-        var tenant = new FSHTenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, request.Issuer, request.PushNotificationsSettings);
+        var tenant = new FSHTenantInfo(request.Id, request.Name, request.ConnectionString, request.AdminEmail, request.Issuer, request.PushNotificationsSettings, request.SmsSettings);
+
         await _tenantStore.TryAddAsync(tenant);
 
         // TODO: run this in a hangfire job? will then have to send mail when it's ready or not
@@ -118,5 +120,13 @@ internal class TenantService : ITenantService
         tenant.PushNotificationsSettings = pushNotificationsSettings;
         await _tenantStore.TryUpdateAsync(tenant);
         return _t["Tenant {0}'s Push Notification Settings Updated.", id];
+    }
+    
+    public async Task<string> UpdateSmsSettings(string id, SmsSettings smsSettings)
+    {
+        var tenant = await GetTenantInfoAsync(id);
+        tenant.SmsSettings = smsSettings;
+        await _tenantStore.TryUpdateAsync(tenant);
+        return _t["Tenant ({0})'s SMS Settings Updated.", id];
     }
 }

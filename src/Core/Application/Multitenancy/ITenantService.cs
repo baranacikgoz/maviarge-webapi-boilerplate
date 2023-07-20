@@ -1,4 +1,5 @@
-﻿using FSH.WebApi.Application.Common.PushNotifications;
+using FSH.WebApi.Application.Common.Sms;
+using FSH.WebApi.Application.Common.PushNotifications;
 
 namespace FSH.WebApi.Application.Multitenancy;
 
@@ -21,4 +22,6 @@ public interface ITenantService
     Task<string> UpdateSubscription(string id, DateTime extendedExpiryDate);
 
     Task<string> UpdatePushNotificationsSettings(string id, PushNotificationsSettings pushNotificationsSettings);
+  
+    Task<string> UpdateSmsSettings(string id, SmsSettings smsSettings);
 }
