@@ -1,3 +1,5 @@
+using FSH.WebApi.Application.Common.Sms;
+
 namespace FSH.WebApi.Application.Multitenancy;
 
 public class CreateTenantRequest : IRequest<string>
@@ -7,6 +9,7 @@ public class CreateTenantRequest : IRequest<string>
     public string? ConnectionString { get; set; }
     public string AdminEmail { get; set; } = default!;
     public string? Issuer { get; set; }
+    public SmsSettings? SmsSettings { get; set; }
 }
 
 public class CreateTenantRequestHandler : IRequestHandler<CreateTenantRequest, string>
