@@ -5,8 +5,8 @@
         <AssemblyName>FSH.WebApi.Host</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
-        <ContainerImageName>dotnet-webapi</ContainerImageName>
-        <ContainerImageTags>1.0.0;latest</ContainerImageTags>
+        <ContainerImageName>maviarge-webapi-boilerplate</ContainerImageName>
+        <ContainerImageTags>latest</ContainerImageTags>
         <PublishProfile>DefaultContainer</PublishProfile>
     </PropertyGroup>
     <ItemGroup>
