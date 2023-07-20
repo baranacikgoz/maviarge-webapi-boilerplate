@@ -11,12 +11,12 @@ public class FSHTenantInfo : ITenantInfo
     {
     }
 
-    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null, PushNotificationsSettings? pushNotificationsSettings = null, SmsSettings? smsSettings = null)
+    public FSHTenantInfo(string id, string name, string connectionString, string adminEmail, string? issuer = null, PushNotificationsSettings? pushNotificationsSettings = null, SmsSettings? smsSettings = null)
     {
         Id = id;
         Identifier = id;
         Name = name;
-        ConnectionString = connectionString ?? string.Empty;
+        ConnectionString = connectionString;
         AdminEmail = adminEmail;
         IsActive = true;
         Issuer = issuer;
@@ -38,7 +38,7 @@ public class FSHTenantInfo : ITenantInfo
     public string Identifier { get; set; } = default!;
 
     public string Name { get; set; } = default!;
-    public string ConnectionString { get; set; } = default!;
+    public string ConnectionString { get; set; }
 
     public string AdminEmail { get; private set; } = default!;
     public bool IsActive { get; private set; }
