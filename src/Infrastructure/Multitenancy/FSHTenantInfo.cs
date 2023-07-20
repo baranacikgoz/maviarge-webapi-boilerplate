@@ -1,4 +1,5 @@
 ﻿using Finbuckle.MultiTenant;
+using FSH.WebApi.Application.Common.PushNotifications;
 using FSH.WebApi.Shared.Multitenancy;
 
 namespace FSH.WebApi.Infrastructure.Multitenancy;
@@ -9,7 +10,7 @@ public class FSHTenantInfo : ITenantInfo
     {
     }
 
-    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null)
+    public FSHTenantInfo(string id, string name, string? connectionString, string adminEmail, string? issuer = null, PushNotificationsSettings? pushNotificationsSettings = null)
     {
         Id = id;
         Identifier = id;
@@ -18,6 +19,7 @@ public class FSHTenantInfo : ITenantInfo
         AdminEmail = adminEmail;
         IsActive = true;
         Issuer = issuer;
+        PushNotificationsSettings = pushNotificationsSettings;
 
         // Add Default 1 Month Validity for all new tenants. Something like a DEMO period for tenants.
         ValidUpto = DateTime.UtcNow.AddMonths(1);
@@ -44,6 +46,8 @@ public class FSHTenantInfo : ITenantInfo
     /// Used by AzureAd Authorization to store the AzureAd Tenant Issuer to map against.
     /// </summary>
     public string? Issuer { get; set; }
+
+    public PushNotificationsSettings? PushNotificationsSettings { get; set; }
 
     public void AddValidity(int months) =>
         ValidUpto = ValidUpto.AddMonths(months);
