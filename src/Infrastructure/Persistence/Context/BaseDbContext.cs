@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using Finbuckle.MultiTenant;
 using FSH.WebApi.Application.Common.Events;
 using FSH.WebApi.Application.Common.Interfaces;
@@ -56,10 +56,15 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
         // Or uncomment the next line if you want to see them in the console
         // optionsBuilder.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
 
-        if (!string.IsNullOrWhiteSpace(TenantInfo?.ConnectionString))
-        {
-            optionsBuilder.UseDatabase(_dbSettings.DBProvider, TenantInfo.ConnectionString);
-        }
+        // Forced separate database per tenant. This is if check is not needed since each tenant must have a connection string.
+        //if (!string.IsNullOrWhiteSpace(TenantInfo?.ConnectionString))
+        //{
+        //    optionsBuilder.UseDatabase(_dbSettings.DBProvider, TenantInfo.ConnectionString);
+        //}
+
+        // Comment the next line while doing migrations or you will get ObjectReferenceNotSetException
+        optionsBuilder.UseDatabase(_dbSettings.DBProvider, TenantInfo.ConnectionString
+            ?? throw new ArgumentNullException(paramName: nameof(TenantInfo.ConnectionString), message: $"Tenant ({TenantInfo.Id})'s connection string is null which should not be possible!"));
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())

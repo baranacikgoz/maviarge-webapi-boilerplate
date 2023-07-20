@@ -9,6 +9,7 @@ public class AuditTrailConfig : IEntityTypeConfiguration<Trail>
 {
     public void Configure(EntityTypeBuilder<Trail> builder) =>
         builder
-            .ToTable("AuditTrails", SchemaNames.Auditing)
-            .IsMultiTenant();
+            .ToTable("AuditTrails", SchemaNames.Auditing);
+
+    //.IsMultiTenant();
 }
