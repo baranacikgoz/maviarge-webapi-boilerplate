@@ -1,6 +1,6 @@
-namespace FSH.WebApi.Application.Auditing;
+//namespace FSH.WebApi.Application.Auditing;
 
-public interface IAuditService : ITransientService
-{
-    Task<List<AuditDto>> GetUserTrailsAsync(Guid userId);
-}
+//public interface IAuditService : ITransientService
+//{
+//    Task<List<AuditDto>> GetUserTrailsAsync(Guid userId);
+//}
