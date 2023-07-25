@@ -104,11 +104,11 @@ namespace Migrators.PostgreSQL.Migrations.Tenant
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Password")
+                            b1.Property<string>("PasswordOrAuthKey")
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<int>("ProviderType")
+                            b1.Property<int>("Provider")
                                 .HasColumnType("integer");
 
                             b1.Property<string>("Usercode")
