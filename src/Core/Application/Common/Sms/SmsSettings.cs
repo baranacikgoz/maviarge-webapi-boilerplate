@@ -5,4 +5,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FSH.WebApi.Application.Common.Sms;
-public sealed record SmsSettings(SmsProviderType ProviderType, string Usercode, string Password, string Header);
+public sealed record SmsSettings(SmsProviderType Provider, string Usercode, string PasswordOrAuthKey, string Header);

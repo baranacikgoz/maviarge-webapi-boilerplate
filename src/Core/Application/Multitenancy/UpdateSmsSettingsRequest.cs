@@ -22,7 +22,7 @@ public class UpdateSmsSettingsRequestValidator : AbstractValidator<UpdateSmsSett
         RuleFor(x => x.SmsSettings.Usercode)
             .NotEmpty()
             .WithMessage(t["Usercode is required."]);
-        RuleFor(x => x.SmsSettings.Password)
+        RuleFor(x => x.SmsSettings.PasswordOrAuthKey)
             .NotEmpty()
             .WithMessage(t["Password is required."]);
         RuleFor(x => x.SmsSettings.Header)
