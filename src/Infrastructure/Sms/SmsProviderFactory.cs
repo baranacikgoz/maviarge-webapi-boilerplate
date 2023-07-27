@@ -1,6 +1,7 @@
 ﻿using FSH.WebApi.Application.Common.Sms;
 using FSH.WebApi.Infrastructure.Multitenancy;
 using FSH.WebApi.Infrastructure.Sms.NetGsm;
+using FSH.WebApi.Infrastructure.Sms.OrganikHaberlesme;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,13 @@ public class SmsProviderFactory : ISmsProviderFactory
 
     public ISmsProvider? Create()
     {
-        if (_currentTenant?.SmsSettings?.ProviderType is { } provider)
+        if (_currentTenant?.SmsSettings?.Provider is { } provider)
         {
             return provider switch
             {
                 SmsProviderType.NetGsm => _serviceProvider.GetRequiredService<NetGsmService>(),
 
-                // SmsProvider.YourCountrysPopularSmsProvider => _serviceProvider.GetRequiredService<YourCountryPopularSmsService>(),
+                SmsProviderType.OrganikHaberlesme => _serviceProvider.GetRequiredService<OrganikHaberlesmeService>(),
 
                 _ => throw new NotImplementedException($"Sms provider {provider} is not implemented.")
             };

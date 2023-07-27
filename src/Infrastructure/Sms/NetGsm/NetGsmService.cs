@@ -31,7 +31,7 @@ public class NetGsmService : ISmsProvider
         _baseQueryParameters = new Dictionary<string, string?>
         {
             { NetGsmConstants.Usercode, _tenantSmsSettings.Usercode },
-            { NetGsmConstants.Password, _tenantSmsSettings.Password },
+            { NetGsmConstants.Password, _tenantSmsSettings.PasswordOrAuthKey },
             { NetGsmConstants.Header, _tenantSmsSettings.Header }
         };
     }

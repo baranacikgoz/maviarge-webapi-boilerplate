@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FSH.WebApi.Application.Common.Sms;
 
-public interface ISmsProvider : ITransientService
+public interface ISmsProvider
 {
     Task SendAsync(SmsContext sms, CancellationToken cancellationToken);
 }

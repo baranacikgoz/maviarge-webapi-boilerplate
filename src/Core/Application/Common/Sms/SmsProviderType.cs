@@ -8,5 +8,6 @@ namespace FSH.WebApi.Application.Common.Sms;
 
 public enum SmsProviderType
 {
-    NetGsm = 1
+    NetGsm = 1,
+    OrganikHaberlesme = 2,
 }
