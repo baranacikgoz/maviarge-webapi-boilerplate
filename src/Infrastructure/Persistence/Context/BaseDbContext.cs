@@ -66,7 +66,7 @@ public abstract class BaseDbContext : MultiTenantIdentityDbContext<ApplicationUs
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
-        // var auditEntries = HandleAuditingBeforeSaveChanges(_currentUser.GetUserId());
+        HandleAuditingBeforeSaveChanges(_currentUser.GetUserId());
 
         int result = await base.SaveChangesAsync(cancellationToken);
 
