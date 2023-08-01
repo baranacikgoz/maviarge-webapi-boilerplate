@@ -22,6 +22,6 @@ public interface ITenantService
     Task<string> UpdateSubscription(string id, DateTime extendedExpiryDate);
 
     Task<string> UpdatePushNotificationsSettings(string id, PushNotificationsSettings pushNotificationsSettings);
-  
+
     Task<string> UpdateSmsSettings(string id, SmsSettings smsSettings);
 }

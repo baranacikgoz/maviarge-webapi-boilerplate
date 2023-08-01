@@ -5,6 +5,7 @@ namespace FSH.WebApi.Shared.Authorization;
 public static class FSHAction
 {
     public const string View = nameof(View);
+    public const string ViewMy = nameof(ViewMy);
     public const string Search = nameof(Search);
     public const string Create = nameof(Create);
     public const string Update = nameof(Update);
@@ -68,7 +69,8 @@ public static class FSHPermissions
         new("View Tenants", FSHAction.View, FSHResource.Tenants, IsRoot: true),
         new("Create Tenants", FSHAction.Create, FSHResource.Tenants, IsRoot: true),
         new("Update Tenants", FSHAction.Update, FSHResource.Tenants, IsRoot: true),
-        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true)
+        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true),
+        new("View my Tenant", FSHAction.ViewMy, FSHResource.Tenants),
     };
 
     public static IReadOnlyList<FSHPermission> All { get; } = new ReadOnlyCollection<FSHPermission>(_all);

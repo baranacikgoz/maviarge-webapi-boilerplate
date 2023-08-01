@@ -25,6 +25,12 @@ public class CreateTenantRequestValidator : CustomValidator<CreateTenantRequest>
 
         RuleFor(t => t.AdminEmail).Cascade(CascadeMode.Stop)
             .NotEmpty()
+            .WithMessage(T["Admin email is required."])
+            .EmailAddress()
+            .WithMessage(T["Admin Email adress is not valid"]);
+
+        RuleFor(t => t.AdminEmail).Cascade(CascadeMode.Stop)
+            .NotEmpty()
             .EmailAddress();
     }
 }

@@ -20,10 +20,26 @@ public class TenantsController : VersionNeutralApiController
         return Mediator.Send(new GetTenantRequest(id));
     }
 
+    [HttpGet("my")]
+    [MustHavePermission(FSHAction.ViewMy, FSHResource.Tenants)]
+    [OpenApiOperation("Get my tenants details.", "")]
+    public Task<TenantDto> GetMyAsync()
+    {
+        return Mediator.Send(new GetMyTenantRequest());
+    }
+
     [HttpPost]
     [MustHavePermission(FSHAction.Create, FSHResource.Tenants)]
     [OpenApiOperation("Create a new tenant.", "")]
     public Task<string> CreateAsync(CreateTenantRequest request)
+    {
+        return Mediator.Send(request);
+    }
+
+    [HttpPost("request-registration")]
+    [AllowAnonymous]
+    [OpenApiOperation("Create a register request for your company.", "")]
+    public Task<string> SelfRegister(RequestRegistrationRequest request)
     {
         return Mediator.Send(request);
     }
@@ -67,7 +83,7 @@ public class TenantsController : VersionNeutralApiController
             ? BadRequest()
             : Ok(await Mediator.Send(request));
     }
-    
+
     [HttpPut("{id}/sms")]
     [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
     [OpenApiOperation("Update a tenant's SMS settings.", "")]
