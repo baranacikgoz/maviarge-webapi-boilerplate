@@ -36,10 +36,10 @@ public class TenantsController : VersionNeutralApiController
         return Mediator.Send(request);
     }
 
-    [HttpPost("request-registration")]
+    [HttpPost("self-register")]
     [AllowAnonymous]
     [OpenApiOperation("Create a register request for your company.", "")]
-    public Task<string> SelfRegister(RequestRegistrationRequest request)
+    public Task<string> SelfRegister(SelfRegisterTenantRequest request)
     {
         return Mediator.Send(request);
     }
