@@ -1,25 +1,12 @@
+using FSH.WebApi.Application.Common.PushNotifications;
+using FSH.WebApi.Application.Common.Sms;
 using FSH.WebApi.Application.Multitenancy;
+using FSH.WebApi.Infrastructure.Multitenancy;
 
 namespace FSH.WebApi.Host.Controllers.Multitenancy;
 
 public class TenantsController : VersionNeutralApiController
 {
-    [HttpGet]
-    [MustHavePermission(FSHAction.View, FSHResource.Tenants)]
-    [OpenApiOperation("Get a list of all tenants.", "")]
-    public Task<List<TenantDto>> GetListAsync()
-    {
-        return Mediator.Send(new GetAllTenantsRequest());
-    }
-
-    [HttpGet("{id}")]
-    [MustHavePermission(FSHAction.View, FSHResource.Tenants)]
-    [OpenApiOperation("Get tenant details.", "")]
-    public Task<TenantDto> GetAsync(string id)
-    {
-        return Mediator.Send(new GetTenantRequest(id));
-    }
-
     [HttpGet("my")]
     [MustHavePermission(FSHAction.ViewMy, FSHResource.Tenants)]
     [OpenApiOperation("Get my tenants details.", "")]
@@ -28,70 +15,33 @@ public class TenantsController : VersionNeutralApiController
         return Mediator.Send(new GetMyTenantRequest());
     }
 
-    [HttpPost]
-    [MustHavePermission(FSHAction.Create, FSHResource.Tenants)]
-    [OpenApiOperation("Create a new tenant.", "")]
-    public Task<string> CreateAsync(CreateTenantRequest request)
-    {
-        return Mediator.Send(request);
-    }
-
     [HttpPost("self-register")]
     [AllowAnonymous]
-    [OpenApiOperation("Create a register request for your company.", "")]
+    [OpenApiOperation("Self register a new tenant.", "")]
     public Task<string> SelfRegister(SelfRegisterTenantRequest request)
     {
         return Mediator.Send(request);
     }
 
-    [HttpPost("{id}/activate")]
-    [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
-    [OpenApiOperation("Activate a tenant.", "")]
+    [HttpPut("my/push-notifications")]
+    [MustHavePermission(FSHAction.UpdateMy, FSHResource.Tenants)]
+    [OpenApiOperation("Update my tenant's push notification settings.", "")]
     [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public Task<string> ActivateAsync(string id)
+    public async Task<ActionResult<string>> UpdatePushNotificationsSettingsAsync(PushNotificationsSettings newSettings)
     {
-        return Mediator.Send(new ActivateTenantRequest(id));
+        UpdatePushNotificationsSettingsRequest request = new(CurrentTenantId!, newSettings);
+
+        return Ok(await Mediator.Send(request));
     }
 
-    [HttpPost("{id}/deactivate")]
-    [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
-    [OpenApiOperation("Deactivate a tenant.", "")]
+    [HttpPut("my/sms")]
+    [MustHavePermission(FSHAction.UpdateMy, FSHResource.Tenants)]
+    [OpenApiOperation("Update my tenant's SMS settings.", "")]
     [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public Task<string> DeactivateAsync(string id)
+    public async Task<ActionResult<string>> UpdateMySmsSettingsAsync(SmsSettings newSettings)
     {
-        return Mediator.Send(new DeactivateTenantRequest(id));
-    }
+        UpdateSmsSettingsRequest request = new(CurrentTenantId!, newSettings);
 
-    [HttpPost("{id}/upgrade")]
-    [MustHavePermission(FSHAction.UpgradeSubscription, FSHResource.Tenants)]
-    [OpenApiOperation("Upgrade a tenant's subscription.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public async Task<ActionResult<string>> UpgradeSubscriptionAsync(string id, UpgradeSubscriptionRequest request)
-    {
-        return id != request.TenantId
-            ? BadRequest()
-            : Ok(await Mediator.Send(request));
-    }
-
-    [HttpPut("{id}/push-notifications")]
-    [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
-    [OpenApiOperation("Update a tenant's push notification settings.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public async Task<ActionResult<string>> UpdatePushNotificationsSettingsAsync(string id, UpdatePushNotificationsSettingsRequest request)
-    {
-        return id != request.TenantId
-            ? BadRequest()
-            : Ok(await Mediator.Send(request));
-    }
-
-    [HttpPut("{id}/sms")]
-    [MustHavePermission(FSHAction.Update, FSHResource.Tenants)]
-    [OpenApiOperation("Update a tenant's SMS settings.", "")]
-    [ApiConventionMethod(typeof(FSHApiConventions), nameof(FSHApiConventions.Register))]
-    public async Task<ActionResult<string>> UpdateSmsSettingsAsync(string id, UpdateSmsSettingsRequest request)
-    {
-        return id != request.TenantId
-            ? BadRequest()
-            : Ok(await Mediator.Send(request));
+        return Ok(await Mediator.Send(request));
     }
 }

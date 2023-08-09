@@ -9,6 +9,7 @@ public static class FSHAction
     public const string Search = nameof(Search);
     public const string Create = nameof(Create);
     public const string Update = nameof(Update);
+    public const string UpdateMy = nameof(UpdateMy);
     public const string Delete = nameof(Delete);
     public const string Export = nameof(Export);
     public const string Generate = nameof(Generate);
@@ -69,6 +70,7 @@ public static class FSHPermissions
         new("View Tenants", FSHAction.View, FSHResource.Tenants, IsRoot: true),
         new("Create Tenants", FSHAction.Create, FSHResource.Tenants, IsRoot: true),
         new("Update Tenants", FSHAction.Update, FSHResource.Tenants, IsRoot: true),
+        new("Update My Tenant's Details", FSHAction.UpdateMy, FSHResource.Tenants),
         new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true),
         new("View my Tenant", FSHAction.ViewMy, FSHResource.Tenants),
     };
