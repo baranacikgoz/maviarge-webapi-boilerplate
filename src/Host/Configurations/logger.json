@@ -2,6 +2,7 @@
   "LoggerSettings": {
     "AppName": "FSH.WebApi",
     "ElasticSearchUrl": "http://localhost:9200",
+    "SeqUrl": "http://localhost:17780",
     "WriteToFile": true,
     "StructuredConsoleLogging": false
   }

@@ -1,7 +1,5 @@
-using System.Reflection;
 using Figgle;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -22,13 +20,15 @@ public static class Extensions
             var loggerSettings = sp.GetRequiredService<IOptions<LoggerSettings>>().Value;
             string appName = loggerSettings.AppName;
             string elasticSearchUrl = loggerSettings.ElasticSearchUrl;
+            string seqUrl = loggerSettings.SeqUrl;
             bool writeToFile = loggerSettings.WriteToFile;
             bool structuredConsoleLogging = loggerSettings.StructuredConsoleLogging;
             string minLogLevel = loggerSettings.MinimumLogLevel;
             ConfigureEnrichers(serilogConfig, appName);
             ConfigureConsoleLogging(serilogConfig, structuredConsoleLogging);
             ConfigureWriteToFile(serilogConfig, writeToFile);
-            ConfigureElasticSearch(builder, serilogConfig, appName, elasticSearchUrl);
+            //ConfigureElasticSearch(builder, serilogConfig, appName, elasticSearchUrl);
+            ConfigureSeq(builder, serilogConfig, seqUrl);
             SetMinimumLogLevel(serilogConfig, minLogLevel);
             OverideMinimumLogLevel(serilogConfig);
             Console.WriteLine(FiggleFonts.Standard.Render(loggerSettings.AppName));
@@ -88,13 +88,28 @@ public static class Extensions
         }
     }
 
+    private static void ConfigureSeq(WebApplicationBuilder builder, LoggerConfiguration serilogConfig, string seqUrl)
+    {
+        if (!string.IsNullOrEmpty(seqUrl))
+        {
+            serilogConfig.WriteTo.Async(writeTo =>
+                writeTo
+                .Seq(seqUrl))
+                .Enrich
+                    .WithProperty("Environment", builder.Environment.EnvironmentName!);
+        }
+    }
+
     private static void OverideMinimumLogLevel(LoggerConfiguration serilogConfig)
     {
         serilogConfig
-                     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                     .MinimumLevel.Override("Hangfire", LogEventLevel.Warning)
-                     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-                     .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Error);
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                    .MinimumLevel.Override("Hangfire", LogEventLevel.Warning)
+                    .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+                    .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Error)
+                    .MinimumLevel.Override("ZymLabs.NSwag.FluentValidation", LogEventLevel.Warning)
+                    .MinimumLevel.Override("Finbuckle.MultiTenant", LogEventLevel.Warning)
+                    .MinimumLevel.Override("FSH.WebApi.Infrastructure.BackgroundJobs", LogEventLevel.Warning);
     }
 
     private static void SetMinimumLogLevel(LoggerConfiguration serilogConfig, string minLogLevel)
@@ -104,12 +119,15 @@ public static class Extensions
             case "debug":
                 serilogConfig.MinimumLevel.Debug();
                 break;
+
             case "information":
                 serilogConfig.MinimumLevel.Information();
                 break;
+
             case "warning":
                 serilogConfig.MinimumLevel.Warning();
                 break;
+
             default:
                 serilogConfig.MinimumLevel.Information();
                 break;
