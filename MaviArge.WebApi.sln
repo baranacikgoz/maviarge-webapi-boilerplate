@@ -51,7 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrators.Oracle", "src\Mig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "src\Core\Shared\Shared.csproj", "{5B986063-2160-4F86-AF1D-7F97671146C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrators.SqLite", "src\Migrators\Migrators.SqLite\Migrators.SqLite.csproj", "{4881A50F-5C2B-4381-81FD-3ECA11450016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrators.SqLite", "src\Migrators\Migrators.SqLite\Migrators.SqLite.csproj", "{4881A50F-5C2B-4381-81FD-3ECA11450016}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{D35BC7F9-6379-4FBF-ABBC-0AF230700BC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +105,10 @@ Global
 		{4881A50F-5C2B-4381-81FD-3ECA11450016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4881A50F-5C2B-4381-81FD-3ECA11450016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4881A50F-5C2B-4381-81FD-3ECA11450016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35BC7F9-6379-4FBF-ABBC-0AF230700BC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35BC7F9-6379-4FBF-ABBC-0AF230700BC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35BC7F9-6379-4FBF-ABBC-0AF230700BC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35BC7F9-6379-4FBF-ABBC-0AF230700BC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,40 @@
+version: '3.4'
+
+services:
+  host:
+    image: ${DOCKER_REGISTRY-}host
+    build:
+      context: .
+      dockerfile: src/Host/Dockerfile
+    environment:
+      - DatabaseSettings__DBProvider=postgresql
+      - DatabaseSettings__ConnectionString=Server=postgresql;Port=5432;Database=root-mavitemplate;User Id=postgres;Password=development;Include Error Detail=true
+      - HangfireSettings__Storage__StorageProvider=postgresql
+      - HangfireSettings__Storage__ConnectionString=Server=postgresql;Port=5432;Database=root-mavitemplate;User Id=postgres;Password=development;Include Error Detail=true
+      - LoggerSettings__SeqUrl=http://seq:80
+      - LoggerSettings__AppName=mavitemplate-webapi
+      - LoggerSettings__MinimumLogLevel=Debug
+      - MiddlewareSettings__EnableLocalization=true
+
+  postgresql:
+    container_name: postgresql
+    image: postgres:16.2
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.containers/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=development
+      - POSTGRES_DB=postgres
+
+  seq:
+    container_name: seq
+    image: datalust/seq:2024.1
+    restart: unless-stopped
+    ports:
+      - 5341:80
+    volumes:
+      - ./.containers/seq:/data
+    environment:
+      - ACCEPT_EULA=Y
