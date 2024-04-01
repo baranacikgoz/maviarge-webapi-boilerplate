@@ -5,9 +5,6 @@
         <AssemblyName>FSH.WebApi.Host</AssemblyName>
     </PropertyGroup>
     <PropertyGroup>
-        <ContainerImageName>maviarge-webapi-boilerplate</ContainerImageName>
-        <ContainerImageTags>latest</ContainerImageTags>
-        <PublishProfile>DefaultContainer</PublishProfile>
         <UserSecretsId>045bd927-fb4a-42d5-bf29-4997c6b09c45</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
