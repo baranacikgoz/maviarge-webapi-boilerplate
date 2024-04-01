@@ -1,6 +1,6 @@
 ﻿namespace FSH.WebApi.Host.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiVersionNeutral]
 public class VersionNeutralApiController : BaseApiController
 {
