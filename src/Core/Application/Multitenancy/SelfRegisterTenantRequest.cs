@@ -55,27 +55,27 @@ public class SelfRegisterTenantRequestHandler : IRequestHandler<SelfRegisterTena
 
     private string GenerateNewConnectionStringForTenant(string tenantIdentifier)
     {
-        const string rootDbName = "mavi";
+        const string rootDbName = "root";
         int newConnectionStringLength = _rootConnectionString.Length - rootDbName.Length + tenantIdentifier.Length;
 
         return string.Create(newConnectionStringLength, (_rootConnectionString, tenantIdentifier), (span, state) =>
         {
             ReadOnlySpan<char> rootConnectionStringAsSpan = state._rootConnectionString.AsSpan();
             ReadOnlySpan<char> tenantIdentifierAsSpan = state.tenantIdentifier.AsSpan();
-            ReadOnlySpan<char> maviAsSpan = rootDbName.AsSpan();
+            ReadOnlySpan<char> rootAsSpan = rootDbName.AsSpan();
 
-            int maviPosition = rootConnectionStringAsSpan.IndexOf(maviAsSpan);
-            if (maviPosition == -1)
+            int rootPosition = rootConnectionStringAsSpan.IndexOf(rootAsSpan);
+            if (rootPosition == -1)
             {
-                throw new InvalidOperationException("The string 'mavi' was not found in the connection string.");
+                throw new InvalidOperationException($"The string '{rootDbName}' was not found in the connection string.");
             }
 
-            ReadOnlySpan<char> beforeMavi = rootConnectionStringAsSpan[..maviPosition];
-            ReadOnlySpan<char> afterMavi = rootConnectionStringAsSpan[(maviPosition + maviAsSpan.Length)..];
+            ReadOnlySpan<char> beforeRoot = rootConnectionStringAsSpan[..rootPosition];
+            ReadOnlySpan<char> afterRoot = rootConnectionStringAsSpan[(rootPosition + rootAsSpan.Length)..];
 
-            beforeMavi.CopyTo(span);
-            tenantIdentifierAsSpan.CopyTo(span[beforeMavi.Length..]);
-            afterMavi.CopyTo(span[(beforeMavi.Length + tenantIdentifierAsSpan.Length)..]);
+            beforeRoot.CopyTo(span);
+            tenantIdentifierAsSpan.CopyTo(span[beforeRoot.Length..]);
+            afterRoot.CopyTo(span[(beforeRoot.Length + tenantIdentifierAsSpan.Length)..]);
         });
     }
 }
